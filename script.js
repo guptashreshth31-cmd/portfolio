@@ -1,34 +1,37 @@
-const text = ["Software Developer", "AI Enthusiast", "Problem Solver"]
+const textArray = [
+  "Shreshth Gupta",
+  "a Developer",
+  "an AI Enthusiast"
+];
 
-let count = 0
-let index = 0
-let currentText = ""
-let letter = ""
+let index = 0;
+let charIndex = 0;
+let currentText = "";
+let isDeleting = false;
 
-function type(){
+function typeEffect() {
+  const typing = document.getElementById("typing");
 
-if(count === text.length){
-count = 0
+  if (index >= textArray.length) index = 0;
+
+  currentText = textArray[index];
+
+  if (!isDeleting) {
+    typing.textContent = currentText.substring(0, charIndex++);
+    if (charIndex > currentText.length) {
+      isDeleting = true;
+      setTimeout(typeEffect, 1000);
+      return;
+    }
+  } else {
+    typing.textContent = currentText.substring(0, charIndex--);
+    if (charIndex === 0) {
+      isDeleting = false;
+      index++;
+    }
+  }
+
+  setTimeout(typeEffect, isDeleting ? 50 : 100);
 }
 
-currentText = text[count]
-letter = currentText.slice(0, ++index)
-
-document.getElementById("typing").textContent = letter
-
-if(letter.length === currentText.length){
-count++
-index = 0
-}
-
-setTimeout(type,100)
-
-}
-
-type()
-
-function scrollToProjects(){
-document.getElementById("projects").scrollIntoView({
-behavior:"smooth"
-})
-}
+typeEffect();
